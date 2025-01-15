@@ -25,15 +25,15 @@ const Login: React.FC = () => {
                 <h1 className="text-2xl font-bold text-green-900">
                   Silan Dental Clinic
                 </h1>
-                <p className="text-lg text-gray-600">Login to Your Account</p>
+                <p className="text-lg text-gray-600">Create an Account</p>
               </div>
               <form>
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700">
-                    Email <span className="text-red-500">*</span>
+                    Name <span className="text-red-500">*</span>
                   </label>
                   <input
-                    type="email"
+                    type="text"
                     className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                     placeholder="Enter your email"
                     required
@@ -41,12 +41,23 @@ const Login: React.FC = () => {
                 </div>
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700">
-                    Password <span className="text-red-500">*</span>
+                    Email <span className="text-red-500">*</span>
                   </label>
                   <input
-                    type="password"
+                    type="email"
                     className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                     placeholder="Enter your password"
+                    required
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Phone Number <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="tel"
+                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                    placeholder="Enter your email"
                     required
                   />
                 </div>
@@ -54,7 +65,7 @@ const Login: React.FC = () => {
                   type="submit"
                   className="w-full py-3 bg-green-900 text-white rounded-md hover:bg-green-700"
                 >
-                  LOGIN
+                  SIGN UP
                 </button>
               </form>
             </div>
