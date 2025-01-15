@@ -91,7 +91,7 @@ const Footer: React.FC = () => {
         {/* Facebook Icon */}
         <div>
           <a
-            href="https://facebook.com"
+            href="https://www.facebook.com/silan.dental.clinic.2024"
             target="_blank"
             rel="noopener noreferrer"
           >
