@@ -1,17 +1,22 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import React from "react";
+import Navbar from "./pages/navbar"; // Import Navbar component
+import Login from "./pages/login"; // Import Login component
+import Footer from "./pages/footer";
 
-function App() {
 
-
+const App: React.FC = () => {
   return (
-    <>
-      <h1 className="text-3xl font-bold underline">
-      Hello world!
-      </h1>
-    </>
-  )
-}
+    <div>
+      {/* Navbar Component */}
+      <Navbar />
 
-export default App
+      {/* Login Component */}
+      <Login />
+
+      {/* Footer Component */}
+      <Footer />
+    </div>
+  );
+};
+
+export default App;
