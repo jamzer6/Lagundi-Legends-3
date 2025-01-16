@@ -5,7 +5,7 @@ const Signup: React.FC = () => {
   return (
     <div>
       {/* Main Signup Section */}
-      <div className="min-h-screen bg-gradient-to-br from-green-500 via-green-600 to-green-900 flex items-center justify-center py-20">
+      <div className="pt-40 min-h-screen bg-gradient-to-br from-green-500 via-green-600 to-green-900 flex items-center justify-center py-20">
         {/* Main Container */}
         <div className="flex w-[90%] max-w-5xl overflow-hidden rounded-lg shadow-lg bg-white">
           {/* Left Image Section */}

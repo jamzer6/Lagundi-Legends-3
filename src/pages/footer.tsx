@@ -23,7 +23,7 @@ const Footer: React.FC = () => {
           <h4 className="text-lg font-bold">Resources</h4>
           <ul className="mt-2">
             <li>
-              <a href="#" className="hover:underline">
+              <a href="#faqs" className="hover:underline">
                 FAQs
               </a>
             </li>
@@ -35,17 +35,17 @@ const Footer: React.FC = () => {
           <h4 className="text-lg font-bold">Company</h4>
           <ul className="mt-2">
             <li>
-              <a href="#" className="hover:underline">
+              <a href="#services" className="hover:underline">
                 Services
               </a>
             </li>
             <li>
-              <a href="#" className="hover:underline">
+              <a href="#about" className="hover:underline">
                 About Us
               </a>
             </li>
             <li>
-              <a href="#" className="hover:underline">
+              <a href="#contact" className="hover:underline">
                 Contact Us
               </a>
             </li>

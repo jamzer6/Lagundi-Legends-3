@@ -4,6 +4,8 @@ import Login from "./pages/login"; // Import Login page
 import SignUp from "./pages/signup"; // Import SignUp page
 import Footer from "./pages/footer"; // Import Footer component
 import Landing from "./pages/landing"; // import landing page
+import Feedback from "./pages/feedback"; // import feedback page
+
 
 const App: React.FC = () => {
   return (
@@ -14,10 +16,11 @@ const App: React.FC = () => {
 
         {/* Routing */}
         <Routes>
-          {/* Set the login page to be the default (root) page */}
+          {/* Set the landing page to be the default (root) page */}
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/feedback" element={<Feedback />} />
 \        </Routes>
 
         {/* Footer is always displayed */}
