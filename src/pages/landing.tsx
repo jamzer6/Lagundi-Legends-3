@@ -141,11 +141,49 @@ const Landing: React.FC = () => {
   </button>
 </div>
 
+{/* About Us Section */}
+<div id="about" className=" py-20 px-10 md:px-20 bg-gradient-to-br from-green-50 to-green-200 mb-12">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-10">
+          {/* About Us Image */}
+          <div className="w-full md:w-1/2">
+            <img
+              src="src/assets/images/about-us.png"
+              alt="About Us"
+              className="w-full h-full rounded-lg shadow-lgtransform transition-transform duration-300 hover:scale-105"
+            />
+          </div>
 
+         
+{/* About Us Section */}
+    <div className="w-full md:w-1/2 mt-4">
+      <div className="p-6 bg-gradient-to-br from-green-100 to-green-200 rounded-lg shadow-md" style={{background: "linear-gradient(to bottom, #ffffff, #e6f5db)"}}> 
+    {/* Container for text */}
+        <h2 className="text-5xl md:text-7xl font-extrabold text-green-900 text-center mb-16">
+          About Us
+        </h2>
+        <p className="text-lg text-gray-800 leading-relaxed mb-6" style={{ textIndent: '1.5em' }}>
+          At <span className="font-bold text-xl">Silan Dental Clinic</span>, we are committed to delivering the highest
+          quality of dental care with a personal touch. Our team of experienced professionals is dedicated to ensuring every patient
+          enjoys a healthy, confident smile.
+        </p>
+        <p className="text-lg text-gray-800 leading-relaxed mb-6">
+          Established in the heart of Indang, Cavite, we have built a legacy
+          of trust and excellence over the years. Our clinic combines modern
+          technology with a warm and welcoming atmosphere to make your dental
+          visits comfortable and stress-free.
+        </p>
+        <p className="text-lg text-gray-800 leading-relaxed">
+          Your smile is our mission, and we’re here to help you every step
+          of the way.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
 
 
       {/* Contact Us Section */}
-<div id="contact" className="bg-gradient-to-br from-green-100 to-green-200 py-16 px-10 flex justify-center items-center">
+<div id="contact" className="bg-gradient-to-br from-green-100 to-green-200 py-32 px-10 flex justify-center items-center">
   {/* Main Container */}
   <div
     className="relative bg-white w-full max-w-6xl rounded-[30px] shadow-xl px-10 py-12 flex flex-col md:flex-row items-center space-y-10 md:space-y-0 md:space-x-10"
@@ -233,7 +271,7 @@ const Landing: React.FC = () => {
 
 
 {/* FAQs Section */}
-<div id="faqs" className="bg-gradient-to-br from-[#e6f5db] via-[#29643a] to-[#0b2013] py-16 px-10 md:px-20 text-white">
+<div id="faqs" className="bg-gradient-to-br from-[#e6f5db] via-[#29643a] to-[#0b2013] py-32 px-10 md:px-20 text-white">
   <h2 className="text-3xl md:text-4xl font-bold text-center mb-10 animate__animated animate__fadeIn animate__delay-1s">
     FAQs
   </h2>

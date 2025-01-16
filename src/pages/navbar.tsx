@@ -50,7 +50,7 @@ const Navbar = () => {
           <img
             src="src/assets/images/Silan Dental Clinic.png"
             alt="Silan Dental Clinic"
-            style={{ width: "80px", height: "auto" }}
+            style={{ width: "120px", height: "auto" }}
             className="h-10"
           />
         </Link>
