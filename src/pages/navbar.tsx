@@ -19,28 +19,28 @@ const Navbar = () => {
       {/* Navigation Links */}
       <ul className="hidden md:flex space-x-6 text-sm">
         <li>
-          <div className="relative h-12 w-40 overflow-hidden border border-green-900 text-white shadow-2xl transition-all duration-200 before:absolute before:left-0 before:right-0 before:top-0 before:h-0 before:w-0 before:bg-green-700 before:duration-300 before:ease-out hover:text-black hover:bg-white hover:shadow-none hover:before:h-40 hover:before:w-40 hover:before:opacity-10 flex items-center justify-center rounded-full">
+          <div className="relative h-12 w-40 overflow-hidden border border-green-900 text-white shadow-2xl transition-all duration-200 before:absolute before:left-0 before:right-0 before:top-0 before:h-0 before:w-0 before:bg-green-900 before:duration-300 before:ease-out hover:text-black hover:bg-white hover:shadow-none hover:before:h-40 hover:before:w-40 hover:before:opacity-10 flex items-center justify-center rounded-full">
             <a href="#services" className="relative z-10 py-2 px-4 text-sm">
               Services
             </a>
           </div>
         </li>
         <li>
-          <div className="relative h-12 w-40 overflow-hidden border border-green-900 text-white shadow-2xl transition-all duration-200 before:absolute before:left-0 before:right-0 before:top-0 before:h-0 before:w-0 before:bg-green-700 before:duration-300 before:ease-out hover:text-black hover:bg-white hover:shadow-none hover:before:h-40 hover:before:w-40 hover:before:opacity-10 flex items-center justify-center rounded-full">
+          <div className="relative h-12 w-40 overflow-hidden border border-green-900 text-white shadow-2xl transition-all duration-200 before:absolute before:left-0 before:right-0 before:top-0 before:h-0 before:w-0 before:bg-green-900 before:duration-300 before:ease-out hover:text-black hover:bg-white hover:shadow-none hover:before:h-40 hover:before:w-40 hover:before:opacity-10 flex items-center justify-center rounded-full">
             <a href="#about" className="relative z-10 py-2 px-4 text-sm">
               About Us
             </a>
           </div>
         </li>
         <li>
-          <div className="relative h-12 w-40 overflow-hidden border border-green-900 text-white shadow-2xl transition-all duration-200 before:absolute before:left-0 before:right-0 before:top-0 before:h-0 before:w-0 before:bg-green-700 before:duration-300 before:ease-out hover:text-black hover:bg-white hover:shadow-none hover:before:h-40 hover:before:w-40 hover:before:opacity-10 flex items-center justify-center rounded-full">
+          <div className="relative h-12 w-40 overflow-hidden border border-green-900 text-white shadow-2xl transition-all duration-200 before:absolute before:left-0 before:right-0 before:top-0 before:h-0 before:w-0 before:bg-green-900 before:duration-300 before:ease-out hover:text-black hover:bg-white hover:shadow-none hover:before:h-40 hover:before:w-40 hover:before:opacity-10 flex items-center justify-center rounded-full">
             <a href="#contact" className="relative z-10 py-2 px-4 text-sm">
               Contact Us
             </a>
           </div>
         </li>
         <li>
-          <div className="relative h-12 w-40 overflow-hidden border border-green-900 text-white shadow-2xl transition-all duration-200 before:absolute before:left-0 before:right-0 before:top-0 before:h-0 before:w-0 before:bg-green-700 before:duration-300 before:ease-out hover:text-black hover:bg-white hover:shadow-none hover:before:h-40 hover:before:w-40 hover:before:opacity-10 flex items-center justify-center rounded-full">
+          <div className="relative h-12 w-40 overflow-hidden border border-green-900 text-white shadow-2xl transition-all duration-200 before:absolute before:left-0 before:right-0 before:top-0 before:h-0 before:w-0 before:bg-green-900 before:duration-300 before:ease-out hover:text-black hover:bg-white hover:shadow-none hover:before:h-40 hover:before:w-40 hover:before:opacity-10 flex items-center justify-center rounded-full">
             <a href="#faqs" className="relative z-10 py-2 px-4 text-sm">
               FAQs
             </a>
@@ -66,7 +66,7 @@ const Navbar = () => {
           // Show Login button only on the SignUp page
           <div className="border-2 border-transparent rounded-lg mr-4">
             <Link
-              to="/" // Navigate to the login page
+              to="/login" // Navigate to the login page
               className="bg-white text-green-900 py-2 px-4 rounded-lg hover:bg-black hover:text-white text-sm"
             >
               Login
