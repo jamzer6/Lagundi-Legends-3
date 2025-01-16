@@ -41,19 +41,19 @@ const Landing: React.FC = () => {
       {/* Services Offered Section */}
 <div
   id="services"
-  className="py-16 px-10 md:px-20 relative"
+  className="w- full py-32 px-20 md:px-20 relative"
   style={{
     background: "linear-gradient(to right, #c8e6c9 60%, #66bb6a 100%)",
   }}
 >
-  <h2 className="text-3xl md:text-4xl font-bold text-green-900 text-center mb-10">
+  <h2 className="text-3xl md:text-6xl font-bold text-green-900 text-center mb-32">
     Services Offered
   </h2>
 
   {/* Scrollable Content */}
   <div
     id="scroll-container"
-    className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth relative z-10 mx-16"
+    className="flex gap-8 overflow-x-auto scrollbar-hide scroll-smooth relative z-10 mx-16"
   >
     {/* Service Cards */}
     {[
