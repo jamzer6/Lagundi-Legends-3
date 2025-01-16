@@ -5,29 +5,34 @@ import SignUp from "./pages/signup"; // Import SignUp page
 import Footer from "./pages/footer"; // Import Footer component
 import Landing from "./pages/landing"; // import landing page
 import Feedback from "./pages/feedback"; // import feedback page
+import ProtectedRoute from './components/ProtectedRoute'; // Import ProtectedRoute component
+import { AuthProvider } from "./auth/authContext"; // Import AuthProvider component
 
 
 const App: React.FC = () => {
   return (
-    <Router>
-      <div>
-        {/* Navbar is always displayed */}
-        <Navbar />
+    <AuthProvider>
+      <Router>
+        <div>
+          {/* Navbar is always displayed */}
+          <Navbar />
 
-        {/* Routing */}
-        <Routes>
-          {/* Set the landing page to be the default (root) page */}
-          <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/feedback" element={<Feedback />} />
-\        </Routes>
+          {/* Routing */}
+          <Routes>
+            {/* Set the landing page to be the default (root) page */}
+            <Route path="/" element={<Landing />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/feedback" element={<Feedback />} />
+            <Route path="/appointment" element={<ProtectedRoute />} />
+          </Routes>
 
-        {/* Footer is always displayed */}
-        <Footer />
-      </div>
-    </Router>
-  );
+          {/* Footer is always displayed */}
+          <Footer />
+        </div>
+      </Router>
+    </AuthProvider>
+  );  
 };
 
 export default App;
