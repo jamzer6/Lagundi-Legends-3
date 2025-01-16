@@ -5,6 +5,9 @@ import SignUp from "./pages/signup"; // Import SignUp page
 import Footer from "./pages/footer"; // Import Footer component
 import Landing from "./pages/landing"; // import landing page
 import Feedback from "./pages/feedback"; // import feedback page
+import Appointment from "./pages/appointment"; // import appointment page
+import Confirmation from "./pages/confirmation"; // import confirmation page
+import Booked from "./pages/booked"; // import booked page
 
 
 const App: React.FC = () => {
@@ -21,6 +24,9 @@ const App: React.FC = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/feedback" element={<Feedback />} />
+          <Route path="/appointment" element={<Appointment />} />
+          <Route path="/confirmation" element={<Confirmation />} />
+          <Route path="/booked" element={<Booked />} />
 \        </Routes>
 
         {/* Footer is always displayed */}
