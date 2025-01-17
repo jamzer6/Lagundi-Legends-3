@@ -2,13 +2,7 @@ import { auth, db } from './firebase.config';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 
-interface User {
-  name: string;
-  email: string;
-  role: string;
-}
-
-export const registerUser = async (user: User, password: string) => {
+export const registerUser = async (user, password) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, user.email, password);
     const userId = userCredential.user.uid;
@@ -26,7 +20,7 @@ export const registerUser = async (user: User, password: string) => {
   }
 };
 
-export const loginUser = async (email: string, password: string) => {
+export const loginUser = async (email, password) => {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const userId = userCredential.user.uid;
