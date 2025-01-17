@@ -1,14 +1,52 @@
-import React from "react";
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { auth, db } from "../../firebase.config"; // Import Firebase auth and Firestore
 
 const Signup: React.FC = () => {
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
+
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      
+      // Save user data to Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        name,
+        email
+      });
+
+      navigate('/login'); // Redirect to login page after successful signup
+    } catch (err) {
+      setError('Failed to create an account. Please try again.');
+      console.error('Signup error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div>
-      {/* Main Signup Section */}
       <div className="pt-40 min-h-screen bg-gradient-to-br from-green-500 via-green-600 to-green-900 flex items-center justify-center py-20">
-        {/* Main Container */}
         <div className="flex w-[90%] max-w-5xl overflow-hidden rounded-lg shadow-lg bg-white">
-          {/* Left Image Section */}
           <div className="w-1/2 relative">
             <img
               src="src/assets/images/silan_clinic.jpg"
@@ -17,18 +55,13 @@ const Signup: React.FC = () => {
             />
             <div className="absolute top-0 left-0 w-full h-full bg-green-900 opacity-30"></div>
           </div>
-
-          {/* Right Form Section */}
           <div className="w-1/2 flex items-center justify-center p-10">
             <div className="w-full max-w-md">
               <div className="text-center mb-8">
-                <h1 className="text-2xl font-bold text-green-900">
-                  Silan Dental Clinic
-                </h1>
+                <h1 className="text-2xl font-bold text-green-900">Silan Dental Clinic</h1>
                 <p className="text-lg text-gray-600">Create Your Account</p>
               </div>
-              <form>
-                {/* Name Input */}
+              <form onSubmit={handleSignup}>
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700">
                     Name <span className="text-red-500">*</span>
@@ -37,11 +70,11 @@ const Signup: React.FC = () => {
                     type="text"
                     className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                     placeholder="Enter your full name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     required
                   />
                 </div>
-
-                {/* Email Input */}
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700">
                     Email <span className="text-red-500">*</span>
@@ -50,11 +83,11 @@ const Signup: React.FC = () => {
                     type="email"
                     className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                     placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     required
                   />
                 </div>
-
-                {/* Password Input */}
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700">
                     Password <span className="text-red-500">*</span>
@@ -63,11 +96,11 @@ const Signup: React.FC = () => {
                     type="password"
                     className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                     placeholder="Enter your password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     required
                   />
                 </div>
-
-                {/* Confirm Password Input */}
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700">
                     Confirm Password <span className="text-red-500">*</span>
@@ -76,20 +109,20 @@ const Signup: React.FC = () => {
                     type="password"
                     className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                     placeholder="Confirm your password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                     required
                   />
                 </div>
-
-                {/* Submit Button */}
+                {error && <p className="text-red-500">{error}</p>}
                 <button
                   type="submit"
                   className="w-full py-3 bg-green-900 text-white rounded-md hover:bg-green-700"
+                  disabled={loading}
                 >
-                  SIGN UP
+                  {loading ? 'SIGNING UP...' : 'SIGN UP'}
                 </button>
               </form>
-
-              {/* Redirect to Login */}
               <div className="mt-4 text-center">
                 <p className="text-sm text-gray-600">
                   Already have an account?{" "}

@@ -30,7 +30,7 @@ const App: React.FC = () => {
           <Route path="/appointment" element={<Appointment />} />
           <Route path="/confirmation" element={<Confirmation />} />
           <Route path="/booked" element={<Booked />} />
-\        </Routes>
+        </Routes>
 
           {/* Footer is always displayed */}
           <Footer />
