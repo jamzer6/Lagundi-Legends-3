@@ -1,9 +1,40 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook } from "@fortawesome/free-brands-svg-icons";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
 
 const Footer: React.FC = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Function to handle navigation and scrolling
+  const handleSectionClick = (sectionId: string) => {
+    // If we're not on the landing page, navigate to landing page with hash
+    if (location.pathname !== '/') {
+      navigate(`/#${sectionId}`);
+    } else {
+      // If we're already on landing page, just scroll to the section
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
+  // Handle scroll when navigating from another page
+  useEffect(() => {
+    if (location.hash && location.pathname === '/') {
+      const id = location.hash.replace('#', '');
+      const element = document.getElementById(id);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 0);
+      }
+    }
+  }, [location]);
+
   return (
     <footer className="bg-green-900 text-white py-8 px-8 md:px-16">
       <div className="container mx-auto flex flex-wrap justify-between items-center">
@@ -23,9 +54,12 @@ const Footer: React.FC = () => {
           <h4 className="text-lg font-bold">Resources</h4>
           <ul className="mt-2">
             <li>
-              <a href="#faqs" className="hover:underline">
+              <button
+                onClick={() => handleSectionClick('faqs')}
+                className="hover:underline cursor-pointer"
+              >
                 FAQs
-              </a>
+              </button>
             </li>
           </ul>
         </div>
@@ -35,19 +69,28 @@ const Footer: React.FC = () => {
           <h4 className="text-lg font-bold">Company</h4>
           <ul className="mt-2">
             <li>
-              <a href="#services" className="hover:underline">
+              <button
+                onClick={() => handleSectionClick('services')}
+                className="hover:underline cursor-pointer"
+              >
                 Services
-              </a>
+              </button>
             </li>
             <li>
-              <a href="#about" className="hover:underline">
+              <button
+                onClick={() => handleSectionClick('about')}
+                className="hover:underline cursor-pointer"
+              >
                 About Us
-              </a>
+              </button>
             </li>
             <li>
-              <a href="#contact" className="hover:underline">
+              <button
+                onClick={() => handleSectionClick('contact')}
+                className="hover:underline cursor-pointer"
+              >
                 Contact Us
-              </a>
+              </button>
             </li>
           </ul>
         </div>
