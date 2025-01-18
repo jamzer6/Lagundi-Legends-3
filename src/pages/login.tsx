@@ -1,6 +1,19 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../auth/authContext";
 
 const Login: React.FC = () => {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    login();
+    alert("Login successful!");  
+    navigate("/appointment")
+
+    //navigate to /appointment and set isAuthenticated to true
+  };
+
   return (
     <div>
 
@@ -53,6 +66,7 @@ const Login: React.FC = () => {
                 <button
                   type="submit"
                   className="w-full py-3 bg-green-900 text-white rounded-md hover:bg-green-700"
+                  onClick={handleLogin}
                 >
                   LOGIN
                 </button>

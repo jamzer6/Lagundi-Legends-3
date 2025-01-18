@@ -21,9 +21,10 @@ const Landing: React.FC = () => {
             innovation for your convenience.
           </p>
 
-          <Link to="/login">
+          {/* Link to login */}
+          <Link to="/appointment">
             <button className="bg-green-600 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-green-700 transition-all">
-              Login
+              Book Your Appointment Now!
             </button>
           </Link>
         </div>
