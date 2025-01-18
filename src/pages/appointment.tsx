@@ -78,11 +78,19 @@ const Appointment: React.FC = () => {
           {error && <p className="text-red-600 text-sm font-medium mt-2">{error}</p>}
 
           <div className="flex justify-center items-center pt-4">
-            <Link to="/confirmation" onClick={(e) => !handleProceed() && e.preventDefault()}>
-              <button className="bg-green-600 text-white rounded-lg text-lg font-semibold hover:bg-green-700 transition-all w-[200px] px-2 py-3">
-                Proceed
-              </button>
-            </Link>
+          <Link
+  to="/confirmation"
+  state={{
+    date: date ? date.toDateString() : null, // Format and pass the selected date
+    service: selectedService.length ? selectedService[0].label : null, // Pass the selected service
+  }}
+  onClick={(e) => !handleProceed() && e.preventDefault()}
+>
+  <button className="bg-green-600 text-white rounded-lg text-lg font-semibold hover:bg-green-700 transition-all w-[200px] px-2 py-3">
+    Proceed
+  </button>
+</Link>
+
           </div>
         </div>
       </div>
