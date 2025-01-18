@@ -5,6 +5,7 @@ import { faPhone } from "@fortawesome/free-solid-svg-icons";
 import { faFacebook } from "@fortawesome/free-brands-svg-icons";
 
 
+
 const Landing: React.FC = () => {
   return (
     <>
@@ -42,19 +43,19 @@ const Landing: React.FC = () => {
       {/* Services Offered Section */}
 <div
   id="services"
-  className="py-16 px-10 md:px-20 relative"
+  className="w- full py-8 px-20 md:px-20 relative pb-16"
   style={{
     background: "linear-gradient(to right, #c8e6c9 60%, #66bb6a 100%)",
   }}
 >
-  <h2 className="text-3xl md:text-4xl font-bold text-green-900 text-center mb-10">
+  <h2 className="text-3xl md:text-6xl font-bold text-green-900 text-center mb-10">
     Services Offered
   </h2>
 
   {/* Scrollable Content */}
   <div
     id="scroll-container"
-    className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth relative z-10 mx-16"
+    className="flex gap-8 overflow-x-auto scrollbar-hide scroll-smooth relative z-10 mx-16"
   >
     {/* Service Cards */}
     {[
@@ -113,15 +114,18 @@ const Landing: React.FC = () => {
     ))}
   </div>
 
-  {/* Left Arrow */}
-  <button
+   {/* Left Arrow */}
+   <button
     className="absolute top-1/2 left-0 transform -translate-y-1/2 h-[100%] w-16 text-white flex justify-center items-center z-20 group"
-    onClick={() =>
-      document.getElementById("scroll-container")?.scrollBy({
-        left: -300,
+    onClick={() => {
+      const container = document.getElementById("scroll-container");
+      const itemWidth = container?.querySelector(".group")?.clientWidth || 0;
+      const scrollDistance = itemWidth * 3; // Scroll by 3 images at a time
+      container?.scrollBy({
+        left: -scrollDistance,
         behavior: "smooth",
-      })
-    }
+      });
+    }}
   >
     <div className="absolute top-0 left-0 h-full w-full bg-gradient-to-r from-green-900 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
     <span className="text-2xl z-10">&#x2039;</span>
@@ -130,30 +134,60 @@ const Landing: React.FC = () => {
   {/* Right Arrow */}
   <button
     className="absolute top-1/2 right-0 transform -translate-y-1/2 h-[100%] w-16 text-white flex justify-center items-center z-20 group"
-    onClick={() =>
-      document.getElementById("scroll-container")?.scrollBy({
-        left: 300,
+    onClick={() => {
+      const container = document.getElementById("scroll-container");
+      const itemWidth = container?.querySelector(".group")?.clientWidth || 0;
+      const scrollDistance = itemWidth * 3; // Scroll by 3 images at a time
+      container?.scrollBy({
+        left: scrollDistance,
         behavior: "smooth",
-      })
-    }
+      });
+    }}
   >
     <div className="absolute top-0 left-0 h-full w-full bg-gradient-to-l from-green-900 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
     <span className="text-2xl z-10">&#x203A;</span>
   </button>
 </div>
 
+{/* About Us Section */}
+<div id="about" className="py-20 px-10 md:px-20 bg-gradient-to-br from-green-50 to-green-200">
+  <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-10">
+    {/* About Us Image */}
+    <div className="w-full md:w-1/2">
+      <img
+        src="src/assets/images/about-us.png"
+        alt="About Us"
+        className="w-full h-full rounded-lg shadow-lg transform transition-transform duration-300 hover:scale-105"
+      />
+    </div>
+
+    {/* About Us Text */}
+    <div className="w-full md:w-1/2 mt-4">
+      <div className="p-6 bg-gradient-to-br from-green-100 to-green-200 rounded-lg shadow-md">
+        <h2 className="text-5xl md:text-7xl font-extrabold text-green-900 text-center mb-16">
+          About Us
+        </h2>
+        <p className="text-lg text-gray-800 leading-relaxed mb-6" style={{ textIndent: "1.5em" }}>
+          At <span className="font-bold text-xl">Silan Dental Clinic</span>, we are committed to delivering the highest
+          quality of dental care with a personal touch. Our team of experienced professionals is dedicated to ensuring every patient
+          enjoys a healthy, confident smile.
+        </p>
+        <p className="text-lg text-gray-800 leading-relaxed mb-6">
+          Established in the heart of Indang, Cavite, we have built a legacy of trust and excellence over the years. Our clinic combines modern technology with a warm and welcoming atmosphere to make your dental visits comfortable and stress-free.
+        </p>
+        <p className="text-lg text-gray-800 leading-relaxed">
+          Your smile is our mission, and we’re here to help you every step of the way.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
       {/* Contact Us Section */}
-<div id="contact" className="bg-gradient-to-br from-green-100 to-green-200 py-16 px-10 flex justify-center items-center">
-  {/* Main Container */}
-  <div
-    className="relative bg-white w-full max-w-6xl rounded-[30px] shadow-xl px-10 py-12 flex flex-col md:flex-row items-center space-y-10 md:space-y-0 md:space-x-10"
-    style={{
-      background: "linear-gradient(to right, white 55%, rgba(0, 100, 0, 0.3) 100%)",
-    }}
-  >
+<div id="contact" className="bg-gradient-to-br from-green-100 to-green-200 py-32 px-10 flex justify-center items-center">
+  <div className="relative bg-white w-full max-w-6xl rounded-[30px] shadow-xl px-10 py-12 flex flex-col md:flex-row items-center space-y-10 md:space-y-0 md:space-x-10">
     {/* Contact Form */}
     <div className="w-full md:w-1/2 space-y-6">
       <h2 className="text-3xl md:text-4xl font-bold text-green-900">
@@ -194,7 +228,7 @@ const Landing: React.FC = () => {
         <div className="text-gray-700">
           <p>
             <a href="tel:+639385951894" className="flex items-center text-green-600 hover:underline">
-              <FontAwesomeIcon icon={faPhone} className="w-5 h-5 mr-2"/> PHONE
+              <FontAwesomeIcon icon={faPhone} className="w-5 h-5 mr-2" /> PHONE
             </a>
           </p>
           <p>+639385951894</p>
@@ -233,8 +267,9 @@ const Landing: React.FC = () => {
 </div>
 
 
+
 {/* FAQs Section */}
-<div id="faqs" className="bg-gradient-to-br from-[#e6f5db] via-[#29643a] to-[#0b2013] py-16 px-10 md:px-20 text-white">
+<div id="faqs" className="bg-gradient-to-br from-[#e6f5db] via-[#29643a] to-[#0b2013] py-32 px-10 md:px-20 text-white">
   <h2 className="text-3xl md:text-4xl font-bold text-center mb-10 animate__animated animate__fadeIn animate__delay-1s">
     FAQs
   </h2>
@@ -282,8 +317,9 @@ const Landing: React.FC = () => {
     {/* Scrollable Feedback Section */}
     <div
       id="feedback-scroll-container"
-      className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth relative z-10 px-10"
-    >
+      className="flex gap-6 overflow-x-auto scrollbar-hide hover:scrollbar-visible scroll-smooth relative z-10 px-10"
+      
+      >
       {[
         {
           name: "Joy Dimaguiba",
@@ -362,31 +398,36 @@ const Landing: React.FC = () => {
 
     {/* Left Arrow */}
     <button
-      className="absolute top-1/2 left-0 transform -translate-y-1/2 h-[100%] w-16 text-white flex justify-center items-center z-20 group"
-      onClick={() =>
-        document.getElementById("feedback-scroll-container")?.scrollBy({
-          left: -300,
-          behavior: "smooth",
-        })
-      }
-    >
-      <div className="absolute top-0 left-0 h-full w-full bg-gradient-to-r from-green-900 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-      <span className="text-2xl z-10">&#x2039;</span>
-    </button>
+  className="absolute top-1/2 left-0 transform -translate-y-1/2 h-[100%] w-16 text-white flex justify-center items-center z-20 group"
+  onClick={() => {
+    const container = document.getElementById("feedback-scroll-container");
+    const itemWidth = container?.querySelector(".flex-col")?.clientWidth || 0;
+    const scrollDistance = itemWidth * 3; // Scroll by 3 items at a time
+    container?.scrollBy({
+      left: -scrollDistance,
+      behavior: "smooth",
+    });
+  }}
+>
+  <div className="absolute top-0 left-0 h-full w-full bg-gradient-to-r from-green-900 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+  <span className="text-2xl z-10">&#x2039;</span>
+</button>
 
-    {/* Right Arrow */}
-    <button
-      className="absolute top-1/2 right-0 transform -translate-y-1/2 h-[100%] w-16 text-white flex justify-center items-center z-20 group"
-      onClick={() =>
-        document.getElementById("feedback-scroll-container")?.scrollBy({
-          left: 300,
-          behavior: "smooth",
-        })
-      }
-    >
-      <div className="absolute top-0 right-0 h-full w-full bg-gradient-to-l from-green-900 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-      <span className="text-2xl z-10">&#x203A;</span>
-    </button>
+<button
+  className="absolute top-1/2 right-0 transform -translate-y-1/2 h-[100%] w-16 text-white flex justify-center items-center z-20 group"
+  onClick={() => {
+    const container = document.getElementById("feedback-scroll-container");
+    const itemWidth = container?.querySelector(".flex-col")?.clientWidth || 0;
+    const scrollDistance = itemWidth * 3; // Scroll by 3 items at a time
+    container?.scrollBy({
+      left: scrollDistance,
+      behavior: "smooth",
+    });
+  }}
+>
+  <div className="absolute top-0 right-0 h-full w-full bg-gradient-to-l from-green-900 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+  <span className="text-2xl z-10">&#x203A;</span>
+</button>
   </div>
 
   {/* Send Feedback Button */}
