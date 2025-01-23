@@ -40,7 +40,7 @@ const Landing: React.FC = () => {
       </div>
 
       {/* Services Offered Section */}
-<div
+<div 
   id="services"
   className="py-16 px-10 md:px-20 relative"
   style={{
@@ -286,30 +286,30 @@ const Landing: React.FC = () => {
     >
       {[
         {
-          name: "Joy Dimaguiba",
+          name: "B.A.",
           feedback:
-            "The dentist was amazing—professional, gentle, and made me feel at ease. My appointment was smooth and stress-free! The dentist was amazing—professional, gentle, and made me feel at ease. My appointment was smooth and stress-free! The dentist was amazing—professional, gentle, and made me feel at ease. My appointment was smooth and stress-free!",
+            "Anxious ako about my front teeth kasi by accident, nabangga ako sa mirror tapos nagkabiyak or nagcrack yung teeth ko. Pero sobrang saya ko kasi tinulungan ako ni Doc Silan. Grabe, super galing! Ngiting tagumpay ako.",
           date: "December 14, 2024",
-          image: "src/assets/images/joy_testimonial.png",
-        },
-        {
-          name: "Anger Patalastas",
-          feedback:
-            "Top-notch service and a clean, modern clinic. Highly recommend for anyone looking for quality dental care!",
-          date: "January 1, 2025",
           image: "src/assets/images/anger_testimonial.png",
         },
         {
-          name: "Disgust Gamutan",
+          name: "K.C.",
           feedback:
-            "Friendly staff and great attention to detail. My teeth have never felt better. Will definitely come back!",
+            "Nagpabrace ako sa ibang dentist way back pre-pandemic, pero imbis na magkaintact yung ngipin ko, lalong humiwalay Kaya inulit ni Doc yung braces ko, in-adjust niya para magpantay. Dahil doon, lumipat na ako ng dentist. Super recommended ko si Doc, kasi finally, mapapantay na rin yung ngipin ko!",
+          date: "January 1, 2025",
+          image: "src/assets/images/joy_testimonial.png",
+        },
+        {
+          name: "S.B.",
+          feedback:
+            "Sobrang takot ng anak ko magpabunot, ayaw na ayaw niya, pero wala kaming choice kasi sobrang sakit ng ngipin niya. Pumunta kami kay Doc Silan, sobrang haba ng pila, pero worth it daw sabi ng anak ko kasi sobrang gaan ng kamay ni Doc, hindi niya namalayan nabunot na pala. Kinabukasan, naglalaro na siya, kaya super worth it! Medyo mahirap lang makakuha ng schedule kay Doc kasi laging fully booked!",
           date: "December 25, 2024",
           image: "src/assets/images/sadness_testimonial.png",
         },
         {
-          name: "Joy Dimaguiba",
+          name: "P.G.",
           feedback:
-            "The dentist was amazing—professional, gentle, and made me feel at ease. My appointment was smooth and stress-free!",
+            "Hindi siya",
           date: "December 14, 2024",
           image: "src/assets/images/joy_testimonial.png",
         },
