@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { Link, useNavigate } from "react-router-dom"; 
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"; // Import Firebase auth functions
+import { getFirestore, doc, setDoc } from "firebase/firestore"; // Import Firestore functions
 import { auth, db } from "../../firebase.config"; // Import Firebase auth and Firestore
 
 const Signup: React.FC = () => {
+  // State variables
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -13,6 +14,7 @@ const Signup: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
+  // Handle form submission for signup 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
@@ -24,6 +26,7 @@ const Signup: React.FC = () => {
     setLoading(true);
     setError("");
 
+    // Create a new user with email and password
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
