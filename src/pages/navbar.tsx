@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
 
-
+  // Detecting scroll state
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 100) {
@@ -17,19 +16,20 @@ const Navbar = () => {
       }
     };
 
-
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
-
+  // Function to handle smooth scrolling or navigation
   const handleSmoothScroll = (e: React.MouseEvent, targetId: string) => {
     e.preventDefault();
+    // If we are not on the landing page, navigate to it with the section hash
     if (location.pathname !== "/") {
-      navigate("/", { state: { targetId } });
+      navigate(`/#${targetId}`);
     } else {
+      // If we are on the landing page, just scroll to the section
       const target = document.getElementById(targetId);
       if (target) {
         target.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -37,11 +37,10 @@ const Navbar = () => {
     }
   };
 
-
+  // Scroll to top when the button is clicked
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-
 
   return (
     <nav className="bg-green-800 text-white px-8 md:px-16 py-4 h-[80px] flex items-center justify-between fixed top-0 w-full z-50">
@@ -50,12 +49,11 @@ const Navbar = () => {
           <img
             src="src/assets/images/Silan Dental Clinic.png"
             alt="Silan Dental Clinic"
-            style={{ width: "80px", height: "auto" }}
+            style={{ width: "120px", height: "auto" }}
             className="h-10"
           />
         </Link>
       </div>
-
 
       <ul className="hidden md:flex space-x-6 text-sm">
         <li>
@@ -104,7 +102,6 @@ const Navbar = () => {
         </li>
       </ul>
 
-
       <div>
         {location.pathname !== "/signup" && (
           <div className="border-2 border-transparent rounded-lg mr-4">
@@ -116,7 +113,6 @@ const Navbar = () => {
             </Link>
           </div>
         )}
-
 
         {location.pathname === "/signup" && (
           <div className="border-2 border-transparent rounded-lg mr-4">
@@ -130,7 +126,6 @@ const Navbar = () => {
         )}
       </div>
 
-
       {isScrolled && (
         <button
           onClick={scrollToTop}
@@ -143,10 +138,4 @@ const Navbar = () => {
   );
 };
 
-
 export default Navbar;
-
-
-
-
-
