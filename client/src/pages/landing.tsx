@@ -3,8 +3,12 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
 import { faFacebook } from "@fortawesome/free-brands-svg-icons";
+import { useAuth } from "../auth/authContext";
+
+
 
 const Landing: React.FC = () => {
+  const { isAuthenticated } = useAuth();
   return (
     <>
       {/* Main Landing Section - Updated with modern gradient and layout */}
@@ -29,13 +33,10 @@ const Landing: React.FC = () => {
             innovation for your convenience.
           </p>
 
-          {/* Updated button design */}
-          <Link to="/login">
-            <button className="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-200 bg-green-600 rounded-full hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 shadow-lg hover:shadow-xl transform hover:scale-105">
-              <span>Book Your Appointment Now!</span>
-              <svg className="w-5 h-5 ml-2 -mr-1 transition-transform duration-200 transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-              </svg>
+           {/* Link to login or appointment based on auth status */}
+           <Link to={isAuthenticated ? "/appointment" : "/login"}>
+            <button className="bg-green-600 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-green-700 transition-all">
+              Book Your Appointment Now!
             </button>
           </Link>
         </div>
