@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
 import { faFacebook } from "@fortawesome/free-brands-svg-icons";
+import { useAuth } from "../auth/authContext";
 
 
 
 const Landing: React.FC = () => {
+  const { isAuthenticated } = useAuth();
   return (
     <>
       {/* Main Landing Section */}
@@ -22,8 +24,8 @@ const Landing: React.FC = () => {
             innovation for your convenience.
           </p>
 
-          {/* Link to login */}
-          <Link to="/appointment">
+           {/* Link to login or appointment based on auth status */}
+           <Link to={isAuthenticated ? "/appointment" : "/login"}>
             <button className="bg-green-600 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-green-700 transition-all">
               Book Your Appointment Now!
             </button>
