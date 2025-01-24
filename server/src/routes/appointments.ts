@@ -31,4 +31,41 @@ router.post("/", async (req: Request, res: Response) => {
   }
 });
 
+// Check for new appointments
+router.get("/new", async (req, res) => {
+  try {
+    const snapshot = await db.collection("appointments")
+      .where("status", "==", "pending")
+      .get();
+    
+    res.json({ count: snapshot.size });
+  } catch (error) {
+    res.status(500).json({ message: "Error checking new appointments" });
+  }
+});
+
+// Update appointment status
+router.put("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    
+    await db.collection("appointments").doc(id).update({ status });
+    res.json({ message: "Appointment updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating appointment" });
+  }
+});
+
+// Delete appointment
+router.delete("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await db.collection("appointments").doc(id).delete();
+    res.json({ message: "Appointment deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting appointment" });
+  }
+});
+
 export default router;

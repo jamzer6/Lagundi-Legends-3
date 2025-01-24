@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; 
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"; // Import Firebase auth functions
-import { getFirestore, doc, setDoc } from "firebase/firestore"; // Import Firestore functions
-import { auth, db } from "../firebase/firebase.config"; // Import Firebase auth and Firestore
+import { Link, useNavigate } from "react-router-dom";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db } from "../firebase/firebase.config";
 
 const Signup: React.FC = () => {
-  // State variables
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -14,7 +13,6 @@ const Signup: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  // Handle form submission for signup 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
@@ -26,18 +24,16 @@ const Signup: React.FC = () => {
     setLoading(true);
     setError("");
 
-    // Create a new user with email and password
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       
-      // Save user data to Firestore
       await setDoc(doc(db, "users", user.uid), {
         name,
         email
       });
 
-      navigate('/login'); // Redirect to login page after successful signup
+      navigate('/login');
     } catch (err) {
       setError('Failed to create an account. Please try again.');
       console.error('Signup error:', err);
@@ -47,93 +43,141 @@ const Signup: React.FC = () => {
   };
 
   return (
-    <div>
-      <div className="pt-40 min-h-screen bg-gradient-to-br from-green-500 via-green-600 to-green-900 flex items-center justify-center py-20">
-        <div className="flex w-[90%] max-w-5xl overflow-hidden rounded-lg shadow-lg bg-white">
-          <div className="w-1/2 relative">
+    <div className="min-h-screen relative bg-gradient-to-br from-[#0b2013] via-[#29643a] to-[#e6f5db] flex items-center justify-center px-4 sm:px-6 lg:px-8">
+      {/* Decorative background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-green-400 rounded-full filter blur-3xl opacity-20 -translate-x-1/2 -translate-y-1/2"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-green-200 rounded-full filter blur-3xl opacity-20 translate-x-1/2 translate-y-1/2"></div>
+      </div>
+
+      {/* Main Container */}
+      <div className="relative w-full max-w-3xl mx-auto">
+        <div className="absolute -inset-1 bg-gradient-to-r from-green-400 to-green-600 rounded-2xl blur opacity-20"></div>
+        <div className="relative flex bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden">
+          {/* Left Image Section */}
+          <div className="hidden md:block w-5/12 relative group">
+            <div className="absolute inset-0 bg-black/20 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <img
               src="src/assets/images/silan_clinic.jpg"
               alt="Dentist"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
-            <div className="absolute top-0 left-0 w-full h-full bg-green-900 opacity-30"></div>
           </div>
-          <div className="w-1/2 flex items-center justify-center p-10">
-            <div className="w-full max-w-md">
-              <div className="text-center mb-8">
-                <h1 className="text-2xl font-bold text-green-900">Silan Dental Clinic</h1>
-                <p className="text-lg text-gray-600">Create Your Account</p>
+
+          {/* Right Form Section */}
+          <div className="w-full md:w-7/12 p-6">
+            <div className="w-full max-w-md mx-auto">
+              <div className="text-center mb-6">
+                <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-900 to-green-600">
+                  Create Your Account
+                </h1>
+                <p className="mt-1 text-sm text-gray-600">Join Silan Dental Clinic today</p>
               </div>
-              <form onSubmit={handleSignup}>
-                <div className="mb-4">
+
+              <form onSubmit={handleSignup} className="space-y-4">
+                <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Name <span className="text-red-500">*</span>
                   </label>
-                  <input
-                    type="text"
-                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                    placeholder="Enter your full name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                  />
+                  <div className="mt-1 relative group">
+                    <input
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
+                      className="block w-full px-3 py-2 rounded-lg border border-gray-300 bg-white/50 backdrop-blur-sm focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 outline-none"
+                      placeholder="Enter your full name"
+                    />
+                  </div>
                 </div>
-                <div className="mb-4">
+
+                <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Email <span className="text-red-500">*</span>
                   </label>
-                  <input
-                    type="email"
-                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                    placeholder="Enter your email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
+                  <div className="mt-1 relative group">
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      className="block w-full px-3 py-2 rounded-lg border border-gray-300 bg-white/50 backdrop-blur-sm focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 outline-none"
+                      placeholder="Enter your email"
+                    />
+                  </div>
                 </div>
-                <div className="mb-4">
+
+                <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Password <span className="text-red-500">*</span>
                   </label>
-                  <input
-                    type="password"
-                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                    placeholder="Enter your password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
+                  <div className="mt-1 relative group">
+                    <input
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      className="block w-full px-3 py-2 rounded-lg border border-gray-300 bg-white/50 backdrop-blur-sm focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 outline-none"
+                      placeholder="Enter your password"
+                    />
+                  </div>
                 </div>
-                <div className="mb-4">
+
+                <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Confirm Password <span className="text-red-500">*</span>
                   </label>
-                  <input
-                    type="password"
-                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                    placeholder="Confirm your password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                  />
+                  <div className="mt-1 relative group">
+                    <input
+                      type="password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                      className="block w-full px-3 py-2 rounded-lg border border-gray-300 bg-white/50 backdrop-blur-sm focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 outline-none"
+                      placeholder="Confirm your password"
+                    />
+                  </div>
                 </div>
-                {error && <p className="text-red-500">{error}</p>}
+
+                {error && (
+                  <div className="bg-red-50 text-red-500 px-3 py-2 rounded-lg text-sm">
+                    {error}
+                  </div>
+                )}
+
                 <button
                   type="submit"
-                  className="w-full py-3 bg-green-900 text-white rounded-md hover:bg-green-700"
                   disabled={loading}
+                  className="relative w-full group mt-2"
                 >
-                  {loading ? 'SIGNING UP...' : 'SIGN UP'}
+                  <div className="absolute -inset-0.5 bg-gradient-to-r from-green-600 to-green-400 rounded-lg blur opacity-30 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+                  <div className="relative w-full px-4 py-2 bg-green-900 text-white rounded-lg transition-all duration-300 group-hover:bg-green-800 flex items-center justify-center">
+                    {loading ? (
+                      <div className="flex items-center">
+                        <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Creating Account...
+                      </div>
+                    ) : (
+                      'Sign Up'
+                    )}
+                  </div>
                 </button>
+
+                <div className="text-center mt-4">
+                  <p className="text-sm text-gray-600">
+                    Already have an account?{" "}
+                    <Link 
+                      to="/login" 
+                      className="font-medium text-green-600 hover:text-green-500 transition-colors duration-300"
+                    >
+                      Login here
+                    </Link>
+                  </p>
+                </div>
               </form>
-              <div className="mt-4 text-center">
-                <p className="text-sm text-gray-600">
-                  Already have an account?{" "}
-                  <Link to="/login" className="text-green-600 hover:underline">
-                    Login here
-                  </Link>
-                </p>
-              </div>
             </div>
           </div>
         </div>

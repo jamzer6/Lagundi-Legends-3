@@ -32,8 +32,9 @@
             <Route path="/appointment" element={<Appointment />} />
             <Route path="/confirmation" element={<Confirmation />} />
             <Route path="/booked" element={<Booked />} />
-            <Route path="/admin" element={<AdminDashboard />} />
-  \        </Routes>
+            <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+            
+          </Routes>
 
             {/* Footer is always displayed */}
             <Footer />
