@@ -23,7 +23,7 @@ const Landing: React.FC = () => {
           </p>
 
           {/* Link to login */}
-          <Link to="/appointment">
+          <Link to="/login">
             <button className="bg-green-600 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-green-700 transition-all">
               Book Your Appointment Now!
             </button>
@@ -43,9 +43,10 @@ const Landing: React.FC = () => {
       {/* Services Offered Section */}
 <div 
   id="services"
-  className="w- full py-8 px-20 md:px-20 relative pb-16"
+  className="height- 100% w-full py-8 px-20 md:px-20 relative pb-16"
   style={{
     background: "linear-gradient(to right, #c8e6c9 60%, #66bb6a 100%)",
+    minHeight: "800px", // Increase the height of the section
   }}
 >
   <h2 className="text-3xl md:text-6xl font-bold text-green-900 text-center mb-10">
@@ -55,7 +56,11 @@ const Landing: React.FC = () => {
   {/* Scrollable Content */}
   <div
     id="scroll-container"
-    className="flex gap-8 overflow-x-auto scrollbar-hide scroll-smooth relative z-10 mx-16"
+    className="flex gap-8 overflow-x-auto scrollbar-hide scroll-smooth relative z-10 mx-auto"
+    style={{ maxWidth: "90%",
+      height: "100vh", // Ensure the container takes full height of the viewport
+      alignItems: "center",// Center vertically
+     }}
   >
     {/* Service Cards */}
     {[
