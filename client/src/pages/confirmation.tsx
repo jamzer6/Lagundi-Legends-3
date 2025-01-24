@@ -93,6 +93,21 @@ const Confirmation: React.FC = () => {
         <div className="text-5xl font-bold text-white">Booking Confirmation</div>
         <div className="bg-white h-auto w-[350px] p-7 flex flex-col gap-y-5 justify-center rounded-lg shadow-xl">
           <p className="text-xl font-semibold text-green-900">Booking Details</p>
+          {/* Add Patient Name */}
+        <div>
+          <p className="text-lg font-semibold text-green-900">Patient Name:</p>
+          <p className="text-green-700 text-lg">
+            {currentUser?.displayName || "Not provided"}
+          </p>
+        </div>
+
+        {/* Add Email */}
+        <div>
+          <p className="text-lg font-semibold text-green-900">Email:</p>
+          <p className="text-green-700 text-lg">
+            {currentUser?.email || "Not provided"}
+          </p>
+        </div>
           <div>
             <p className="text-lg font-semibold text-green-900">Date:</p>
             <p className="text-green-700 text-lg">
