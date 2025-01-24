@@ -1,22 +1,34 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../auth/authContext";
 
 const Login: React.FC = () => {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [error, setError] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    login();
-    alert("Login successful!");  
-    navigate("/appointment")
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
 
-    //navigate to /appointment and set isAuthenticated to true
+    try {
+      await login(email, password);
+      alert("Login successful!");   // Replace with actual login message or functionality
+      navigate('/'); // Redirect to landing page after successful login
+    } catch (err) {
+      setError('Failed to login. Please try again.');
+      console.error('Login error:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div>
-
       {/* Main Login Section */}
       <div className="min-h-screen bg-gradient-to-br from-green-500 via-green-600 to-green-900 flex items-center justify-center">
         {/* Main Container */}
@@ -40,16 +52,18 @@ const Login: React.FC = () => {
                 </h1>
                 <p className="text-lg text-gray-600">Login to Your Account</p>
               </div>
-              <form>
+              <form onSubmit={handleLogin}>
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700">
                     Email <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="email"
-                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                    value={email}
                     placeholder="Enter your email"
+                    onChange={(e) => setEmail(e.target.value)}
                     required
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
                   />
                 </div>
                 <div className="mb-4">
@@ -57,20 +71,30 @@ const Login: React.FC = () => {
                     Password <span className="text-red-500">*</span>
                   </label>
                   <input
-                    type="tel"
-                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                    type="password"
+                    value={password}
                     placeholder="Enter your password"
+                    onChange={(e) => setPassword(e.target.value)}
                     required
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
                   />
                 </div>
                 <button
                   type="submit"
                   className="w-full py-3 bg-green-900 text-white rounded-md hover:bg-green-700"
-                  onClick={handleLogin}
+                  disabled={loading}
                 >
-                  LOGIN
+                  {loading ? 'LOGGING IN...' : 'LOGIN'}
                 </button>
               </form>
+              <div className="mt-4 text-center">
+                <p className="text-sm text-gray-600">
+                  Don't have an account?{" "}
+                  <Link to="/signup" className="text-green-600 hover:underline">
+                    Sign up here
+                  </Link>
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -80,4 +104,3 @@ const Login: React.FC = () => {
 };
 
 export default Login;
-

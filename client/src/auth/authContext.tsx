@@ -1,9 +1,14 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
+import { auth } from '../firebase/firebase.config';
+import { onAuthStateChanged } from 'firebase/auth';
+import { registerUser, loginUser, logoutUser } from '../firebase/auth';
 
 interface AuthContextType {
+  currentUser: any;
   isAuthenticated: boolean;
-  login: () => void;
-  logout: () => void;
+  register: (user: { name: string; email: string; role: string }, password: string) => Promise<any>;
+  login: (email: string, password: string) => Promise<any>;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -13,13 +18,31 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
-  const login = () => setIsAuthenticated(true);
-  const logout = () => setIsAuthenticated(false);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+      setIsAuthenticated(!!user);
+    });
+    return unsubscribe;
+  }, []);
+
+  const register = (user: { name: string; email: string; role: string }, password: string) => {
+    return registerUser(user, password);
+  };
+
+  const login = (email: string, password: string) => {
+    return loginUser(email, password);
+  };
+
+  const logout = () => {
+    return logoutUser();
+  };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ currentUser, isAuthenticated, register, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
