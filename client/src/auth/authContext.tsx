@@ -1,10 +1,11 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import { User } from 'firebase/auth';
 import { auth } from '../firebase/firebase.config';
 import { onAuthStateChanged } from 'firebase/auth';
 import { registerUser, loginUser, logoutUser } from '../firebase/auth';
 
 interface AuthContextType {
-  currentUser: any;
+  currentUser: User | null;
   isAuthenticated: boolean;
   register: (user: { name: string; email: string; role: string }, password: string) => Promise<any>;
   login: (email: string, password: string) => Promise<any>;
@@ -18,7 +19,7 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {

@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; 
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"; // Import Firebase auth functions
-import { getFirestore, doc, setDoc } from "firebase/firestore"; // Import Firestore functions
-import { auth, db } from "../firebase/firebase.config"; // Import Firebase auth and Firestore
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
+import { auth, db } from '../firebase/firebase.config'; // adjust path as needed
 
 const Signup: React.FC = () => {
   // State variables
@@ -26,18 +27,23 @@ const Signup: React.FC = () => {
     setLoading(true);
     setError("");
 
-    // Create a new user with email and password
     try {
+      // Create a new user with email and password
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       
+      // Update the user's profile with their name
+      await updateProfile(user, {
+        displayName: name
+      });
+      
       // Save user data to Firestore
       await setDoc(doc(db, "users", user.uid), {
-        name,
-        email
+        name: name,
+        email: email
       });
 
-      navigate('/login'); // Redirect to login page after successful signup
+      navigate('/login');
     } catch (err) {
       setError('Failed to create an account. Please try again.');
       console.error('Signup error:', err);
@@ -45,6 +51,7 @@ const Signup: React.FC = () => {
       setLoading(false);
     }
   };
+
 
   return (
     <div>

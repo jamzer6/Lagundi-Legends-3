@@ -1,33 +1,57 @@
-import { Router } from "express";
-import { db } from "../firebase"; // Adjust path based on where firebase is initialized
-import { Request, Response } from "express";
+import { Router, Request, Response } from "express";
+import { Appointment } from "../types/appointment";
+import { db } from "../firebase";
 
 const router = Router();
 
-// Create an appointment
-router.post("/", async (req: Request, res: Response) => {
-  const { patientId, patientName, date, service } = req.body;
-
-  if (!patientId || !patientName || !date || !service) {
-    return res.status(400).json({ message: "All fields are required." });
-  }
-
+// Get all appointments
+router.get("/", async (req: Request, res: Response) => {
   try {
-    const appointmentRef = db.collection("appointments").doc();
-    await appointmentRef.set({
-      id: appointmentRef.id,
-      patientId,
-      patientName,
-      date,
-      service,
-      status: "pending",
+    const appointmentsSnapshot = await db.collection("appointments").get();
+    const appointments = appointmentsSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    res.json(appointments);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch appointments" });
+  }
+});
+
+// Add new appointment
+router.post("/", async (req: Request, res: Response) => {
+  try {
+    const appointment: Appointment = req.body;
+    const docRef = await db.collection("appointments").add({
+      ...appointment,
       createdAt: new Date().toISOString(),
     });
-
-    return res.status(201).json({ message: "Appointment created successfully." });
+    res.status(201).json({ id: docRef.id, ...appointment });
   } catch (error) {
-    console.error("Error creating appointment:", error);
-    return res.status(500).json({ message: "Failed to create appointment." });
+    res.status(500).json({ error: "Failed to create appointment" });
+  }
+});
+
+// Update appointment
+router.put("/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const updates = req.body;
+    await db.collection("appointments").doc(id).update(updates);
+    res.json({ message: "Appointment updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update appointment" });
+  }
+});
+
+// Delete appointment
+router.delete("/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    await db.collection("appointments").doc(id).delete();
+    res.json({ message: "Appointment deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete appointment" });
   }
 });
 
