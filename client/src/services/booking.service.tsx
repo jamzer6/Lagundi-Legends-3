@@ -1,4 +1,4 @@
-import { db } from "../../firebase.config";
+import { db } from "../firebase/firebase.config";
 import { collection, addDoc, getDocs, query, where, doc, getDoc, updateDoc, deleteDoc, DocumentReference, DocumentData } from "firebase/firestore";
 
 interface Appointment {
