@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; 
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"; // Import Firebase auth functions
 import { getFirestore, doc, setDoc } from "firebase/firestore"; // Import Firestore functions
-import { auth, db } from "../../firebase.config"; // Import Firebase auth and Firestore
+import { auth, db } from "../firebase/firebase.config"; // Import Firebase auth and Firestore
 
 const Signup: React.FC = () => {
   // State variables
