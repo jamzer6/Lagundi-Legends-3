@@ -18,7 +18,12 @@ const Login: React.FC = () => {
     try {
       await login(email, password);
       alert("Login successful!");   // Replace with actual login message or functionality
-      navigate('/'); // Redirect to landing page after successful login
+      // Check if user is admin and redirect accordingly
+      if (email.endsWith('@silandental.com')) {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
     } catch (err) {
       setError('Failed to login. Please try again.');
       console.error('Login error:', err);
