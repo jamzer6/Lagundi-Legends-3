@@ -9,7 +9,7 @@
   import Appointment from "./pages/appointment"; // import appointment page
   import Confirmation from "./pages/confirmation"; // import confirmation page
   import Booked from "./pages/booked"; // import booked page
-  import AdminDashboard from "./pages/admin/AdminDashboard";
+  import AdminRoutes from "./routes/AdminRoutes";
   import ProtectedRoute from './components/ProtectedRoute'; // Import ProtectedRoute component
   import { AuthProvider } from "./auth/authContext"; // Import AuthProvider component
 
@@ -29,10 +29,11 @@
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/feedback" element={<Feedback />} />
-            <Route path="/appointment" element={<Appointment />} />
+            <Route path="/appointment" element={<ProtectedRoute><Appointment /></ProtectedRoute>} />
             <Route path="/confirmation" element={<Confirmation />} />
             <Route path="/booked" element={<Booked />} />
-            <Route path="/admin" element={<AdminDashboard />} />
+            {/* Admin Routes */}
+            <Route path="/admin/*" element={<AdminRoutes />} />
   \        </Routes>
 
             {/* Footer is always displayed */}
