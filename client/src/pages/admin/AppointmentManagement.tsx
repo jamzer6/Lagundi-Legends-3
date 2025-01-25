@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { collection, query, getDocs, deleteDoc, doc, updateDoc, addDoc, where } from 'firebase/firestore';
+import { collection, query, getDocs, deleteDoc, doc, updateDoc, addDoc } from 'firebase/firestore';
 import { db } from '../../firebase/firebase.config';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+
+type AppointmentStatus = 'pending' | 'confirmed' | 'cancelled';
 
 interface Appointment {
   id: string;
@@ -10,8 +12,12 @@ interface Appointment {
   patientName: string;
   date: Date;
   time: string;
-  status: 'pending' | 'confirmed' | 'cancelled';
+  status: AppointmentStatus;
   notes?: string;
+  createdAt: Date;
+  email: string;
+  phoneNumber: string;
+  service: string;
 }
 
 const AppointmentManagement: React.FC = () => {
@@ -23,7 +29,8 @@ const AppointmentManagement: React.FC = () => {
     patientId: '',
     date: new Date(),
     time: '',
-    notes: ''
+    notes: '',
+    service: ''
   });
 
   useEffect(() => {
@@ -33,13 +40,29 @@ const AppointmentManagement: React.FC = () => {
 
   const fetchPatients = async () => {
     try {
-      const patientsQuery = query(collection(db, 'patients'));
-      const querySnapshot = await getDocs(patientsQuery);
-      const patientData = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        name: doc.data().name
-      }));
-      setPatients(patientData);
+      // Mock patient data
+      const mockPatients = [
+        { id: '1', name: 'Donald Trump' },
+        { id: '2', name: 'BongBong Marcos' },
+        { id: '3', name: 'John Cena' },
+        { id: '4', name: 'Stephen Hawking' },
+        { id: '5', name: 'Elon Musk' },
+        { id: '6', name: 'Jeff Bezos' },
+        { id: '7', name: 'Bill Gates' },
+        { id: '8', name: 'Mark Zuckerberg' },
+        { id: '9', name: 'Warren Buffet' },
+        { id: '10', name: 'Oprah Winfrey' },
+      ];
+      setPatients(mockPatients);
+
+      // Uncomment the following lines to fetch real patient data from Firestore
+      // const patientsQuery = query(collection(db, 'users'));
+      // const querySnapshot = await getDocs(patientsQuery);
+      // const patientData = querySnapshot.docs.map(doc => ({
+      //   id: doc.id,
+      //   name: doc.data().name
+      // }));
+      // setPatients(patientData);
     } catch (error) {
       console.error('Error fetching patients:', error);
     }
@@ -52,8 +75,10 @@ const AppointmentManagement: React.FC = () => {
       const appointmentData = querySnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data(),
-        date: doc.data().date.toDate()
+        date: new Date(doc.data().date),
+        createdAt: new Date(doc.data().createdAt)
       })) as Appointment[];
+      console.log('Fetched Appointments:', appointmentData); // Debugging log
       setAppointments(appointmentData);
     } catch (error) {
       console.error('Error fetching appointments:', error);
@@ -77,10 +102,16 @@ const AppointmentManagement: React.FC = () => {
       const patient = patients.find(p => p.id === newAppointment.patientId);
       
       await addDoc(collection(db, 'appointments'), {
-        ...newAppointment,
-        status: 'pending',
+        patientId: newAppointment.patientId,
         patientName: patient?.name,
-        date: newAppointment.date
+        date: newAppointment.date.toISOString(),
+        time: newAppointment.time,
+        status: 'pending',
+        notes: newAppointment.notes,
+        createdAt: new Date().toISOString(),
+        email: 'admin@silandental.com', // Replace with actual email if available
+        phoneNumber: '', // Replace with actual phone number if available
+        service: newAppointment.service
       });
 
       fetchAppointments();
@@ -88,30 +119,62 @@ const AppointmentManagement: React.FC = () => {
         patientId: '',
         date: new Date(),
         time: '',
-        notes: ''
+        notes: '',
+        service: ''
       });
     } catch (error) {
       console.error('Error adding appointment:', error);
     }
   };
 
-  const handleDeleteAppointment = async (appointmentId: string) => {
-    if (window.confirm('Are you sure you want to delete this appointment?')) {
-      try {
-        await deleteDoc(doc(db, 'appointments', appointmentId));
-        fetchAppointments();
-      } catch (error) {
-        console.error('Error deleting appointment:', error);
-      }
+  const handleUpdateAppointment = async (appointmentId: string, updates: Partial<Appointment>) => {
+    try {
+      const appointmentRef = doc(db, 'appointments', appointmentId);
+      
+      // Show loading state or disable the dropdown while updating
+      setLoading(true);
+      
+      await updateDoc(appointmentRef, updates);
+      
+      // Update the local state to reflect the changes immediately
+      setAppointments(prevAppointments => 
+        prevAppointments.map(appointment => 
+          appointment.id === appointmentId 
+            ? { ...appointment, ...updates }
+            : appointment
+        )
+      );
+
+      // Show success message
+      alert('Appointment status updated successfully!');
+    } catch (error) {
+      console.error('Error updating appointment:', error);
+      alert('Failed to update appointment status. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleUpdateAppointment = async (appointmentId: string, updates: Partial<Appointment>) => {
-    try {
-      await updateDoc(doc(db, 'appointments', appointmentId), updates);
-      fetchAppointments();
-    } catch (error) {
-      console.error('Error updating appointment:', error);
+  const handleDeleteAppointment = async (appointmentId: string) => {
+    if (window.confirm('Are you sure you want to delete this appointment? This action cannot be undone.')) {
+      try {
+        setLoading(true);
+        
+        // Delete from Firestore
+        await deleteDoc(doc(db, 'appointments', appointmentId));
+        
+        // Update local state to remove the deleted appointment
+        setAppointments(prevAppointments => 
+          prevAppointments.filter(appointment => appointment.id !== appointmentId)
+        );
+
+        alert('Appointment deleted successfully!');
+      } catch (error) {
+        console.error('Error deleting appointment:', error);
+        alert('Failed to delete appointment. Please try again.');
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -172,6 +235,15 @@ const AppointmentManagement: React.FC = () => {
                 onChange={(e) => setNewAppointment({ ...newAppointment, notes: e.target.value })}
                 className="p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
               />
+
+              <input
+                type="text"
+                placeholder="Service"
+                value={newAppointment.service}
+                onChange={(e) => setNewAppointment({ ...newAppointment, service: e.target.value })}
+                className="p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                required
+              />
             </div>
 
             <button
@@ -214,8 +286,12 @@ const AppointmentManagement: React.FC = () => {
                     <div className="flex flex-wrap gap-2">
                       <select
                         value={appointment.status}
-                        onChange={(e) => handleUpdateAppointment(appointment.id, { status: e.target.value as 'pending' | 'confirmed' | 'cancelled' })}
+                        onChange={(e) => {
+                          const newStatus = e.target.value as AppointmentStatus;
+                          handleUpdateAppointment(appointment.id, { status: newStatus });
+                        }}
                         className="p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                        disabled={loading}
                       >
                         <option value="pending">Pending</option>
                         <option value="confirmed">Confirmed</option>
@@ -224,7 +300,8 @@ const AppointmentManagement: React.FC = () => {
 
                       <button
                         onClick={() => handleDeleteAppointment(appointment.id)}
-                        className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                        className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors disabled:opacity-50"
+                        disabled={loading}
                       >
                         Delete
                       </button>
@@ -233,6 +310,71 @@ const AppointmentManagement: React.FC = () => {
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* All Appointments List */}
+          <div className="mt-8">
+            <h3 className="text-2xl font-bold text-gray-800 mb-4">All Appointments</h3>
+            {appointments.length === 0 ? (
+              <p className="text-gray-600 text-center py-4">No appointments found</p>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="min-w-full bg-white rounded-lg">
+                  <thead>
+                    <tr className="bg-gray-100">
+                      <th className="px-6 py-3 text-left text-gray-800">Patient Name</th>
+                      <th className="px-6 py-3 text-left text-gray-800">Date</th>
+                      <th className="px-6 py-3 text-left text-gray-800">Time</th>
+                      <th className="px-6 py-3 text-left text-gray-800">Status</th>
+                      <th className="px-6 py-3 text-left text-gray-800">Notes</th>
+                      <th className="px-6 py-3 text-left text-gray-800">Service</th>
+                      <th className="px-6 py-3 text-left text-gray-800">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {appointments.map((appointment) => (
+                      <tr key={appointment.id} className="border-b hover:bg-gray-50">
+                        <td className="px-6 py-4">{appointment.patientName}</td>
+                        <td className="px-6 py-4">
+                          {appointment.date.toLocaleDateString()}
+                        </td>
+                        <td className="px-6 py-4">{appointment.time}</td>
+                        <td className="px-6 py-4">
+                          <select
+                            value={appointment.status}
+                            onChange={(e) => {
+                              const newStatus = e.target.value as AppointmentStatus;
+                              handleUpdateAppointment(appointment.id, { status: newStatus });
+                            }}
+                            className="p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                            disabled={loading}
+                          >
+                            <option value="pending">Pending</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="cancelled">Cancelled</option>
+                          </select>
+                        </td>
+                        <td className="px-6 py-4">
+                          {appointment.notes || '-'}
+                        </td>
+                        <td className="px-6 py-4">
+                          {appointment.service}
+                        </td>
+                        <td className="px-6 py-4">
+                          <button
+                            onClick={() => handleDeleteAppointment(appointment.id)}
+                            className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors disabled:opacity-50"
+                            disabled={loading}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         </div>
       </div>

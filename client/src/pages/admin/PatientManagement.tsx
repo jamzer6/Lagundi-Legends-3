@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { collection, query, getDocs, deleteDoc, doc, addDoc } from 'firebase/firestore';
+import { collection, query, getDocs, deleteDoc, doc, setDoc } from 'firebase/firestore';
+import { getAuth, createUserWithEmailAndPassword, reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth';
 import { db } from '../../firebase/firebase.config';
 
 interface Patient {
@@ -27,7 +28,7 @@ const PatientManagement: React.FC = () => {
 
   const fetchPatients = async () => {
     try {
-      const patientsQuery = query(collection(db, 'patients'));
+      const patientsQuery = query(collection(db, 'users'));
       const querySnapshot = await getDocs(patientsQuery);
       const patientData = querySnapshot.docs.map(doc => ({
         id: doc.id,
@@ -44,21 +45,50 @@ const PatientManagement: React.FC = () => {
   const handleAddPatient = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await addDoc(collection(db, 'patients'), {
-        ...newPatient,
+      const { email, password, name, phoneNumber } = newPatient;
+      const auth = getAuth();
+      const currentUser = auth.currentUser;
+
+      if (!currentUser) {
+        throw new Error('No authenticated user found');
+      }
+
+      // Store the current user's credentials
+      const currentEmail = currentUser.email;
+      const currentPassword = prompt('Please enter your password to re-authenticate:');
+
+      if (!currentEmail || !currentPassword) {
+        throw new Error('Re-authentication failed');
+      }
+
+      // Create the new user
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const uid = userCredential.user.uid;
+
+      await setDoc(doc(db, 'users', uid), {
+        name,
+        email,
+        phoneNumber,
         appointments: []
       });
+
+      // Re-authenticate the current user
+      const credential = EmailAuthProvider.credential(currentEmail, currentPassword);
+      await reauthenticateWithCredential(currentUser, credential);
+
       fetchPatients();
       setNewPatient({ name: '', email: '', phoneNumber: '', password: '' });
+      alert('Patient added successfully!');
     } catch (error) {
       console.error('Error adding patient:', error);
+      alert('Error adding patient. Please try again.');
     }
   };
 
   const handleDeletePatient = async (patientId: string) => {
     if (window.confirm('Are you sure you want to delete this patient?')) {
       try {
-        await deleteDoc(doc(db, 'patients', patientId));
+        await deleteDoc(doc(db, 'users', patientId));
         fetchPatients();
       } catch (error) {
         console.error('Error deleting patient:', error);

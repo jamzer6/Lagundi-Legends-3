@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { collection, query, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase/firebase.config';
 import { Line } from 'react-chartjs-2';
+import { getLastSixMonths, calculateMonthlyAppointments } from '../../utils/chartUtils';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -25,12 +26,25 @@ ChartJS.register(
 
 const AdminOverview: React.FC = () => {
   const [stats, setStats] = useState({
-    totalPatients: 0,
-    totalAppointments: 0,
+    totalPatients: 82,
+    totalAppointments: 59,
     pendingAppointments: 0,
     completedAppointments: 0,
   });
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [chartData, setChartData] = useState({
+    labels: getLastSixMonths(),
+    datasets: [
+      {
+        label: 'Appointments',
+        data: [18, 14, 12, 15, 22, 18],
+        fill: false,
+        borderColor: 'rgb(22, 163, 74)',
+        tension: 0.1,
+      },
+    ],
+  });
 
   useEffect(() => {
     fetchStats();
@@ -38,15 +52,19 @@ const AdminOverview: React.FC = () => {
 
   const fetchStats = async () => {
     try {
-      const patientsSnapshot = await getDocs(collection(db, 'patients'));
+      const usersSnapshot = await getDocs(collection(db, 'users'));
       const appointmentsSnapshot = await getDocs(collection(db, 'appointments'));
 
-      const appointments = appointmentsSnapshot.docs.map(doc => doc.data());
+      const appointments = appointmentsSnapshot.docs.map(doc => ({
+        ...doc.data(),
+        date: doc.data().date.toDate(),
+        status: doc.data().status
+      }));
       const pending = appointments.filter(apt => apt.status === 'pending').length;
       const completed = appointments.filter(apt => apt.status === 'completed').length;
 
       setStats({
-        totalPatients: patientsSnapshot.size,
+        totalPatients: usersSnapshot.size,
         totalAppointments: appointmentsSnapshot.size,
         pendingAppointments: pending,
         completedAppointments: completed,
@@ -124,7 +142,7 @@ const AdminOverview: React.FC = () => {
             <h3 className="text-xl font-semibold text-gray-800 mb-4">Appointment Trends</h3>
             <div className="h-[300px]">
               <Line
-                data={appointmentData}
+                data={chartData}
                 options={{
                   responsive: true,
                   maintainAspectRatio: false,
